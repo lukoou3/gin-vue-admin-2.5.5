@@ -2,26 +2,28 @@
   <div>
     <div class="gva-search-box">
       <el-form :inline="true" :model="searchInfo" class="demo-form-inline" @keyup.enter="onSubmit">
-      <el-form-item label="创建时间">
-      <el-date-picker v-model="searchInfo.startCreatedAt" type="datetime" placeholder="开始时间"></el-date-picker>
-       —
-      <el-date-picker v-model="searchInfo.endCreatedAt" type="datetime" placeholder="结束时间"></el-date-picker>
-      </el-form-item>
+        <el-form-item label="创建时间">
+          <el-date-picker v-model="searchInfo.startCreatedAt" type="datetime" placeholder="开始时间"></el-date-picker>
+          —
+          <el-date-picker v-model="searchInfo.endCreatedAt" type="datetime" placeholder="结束时间"></el-date-picker>
+        </el-form-item>
         <el-form-item label="数据源名称">
-         <el-input v-model="searchInfo.name" placeholder="搜索条件" />
+          <el-input v-model="searchInfo.name" placeholder="搜索条件"/>
 
         </el-form-item>
         <el-form-item label="数据源别名">
-         <el-input v-model="searchInfo.alias" placeholder="搜索条件" />
+          <el-input v-model="searchInfo.alias" placeholder="搜索条件"/>
 
         </el-form-item>
-           <el-form-item label="分类" prop="cate">
-            <el-select v-model="searchInfo.cate" clearable placeholder="请选择" @clear="()=>{searchInfo.cate=undefined}">
-              <el-option v-for="(item,key) in sql_datasource_cateOptions" :key="key" :label="item.label" :value="item.value" />
-            </el-select>
-            </el-form-item>
+        <el-form-item label="分类" prop="cate">
+          <el-select v-model="searchInfo.cate" clearable placeholder="请选择" @clear="()=>{searchInfo.cate=undefined}">
+            <el-option v-for="(item,key) in sql_datasource_cateOptions" :key="key" :label="item.label"
+                       :value="item.value"
+            />
+          </el-select>
+        </el-form-item>
         <el-form-item label="简介">
-         <el-input v-model="searchInfo.introduction" placeholder="搜索条件" />
+          <el-input v-model="searchInfo.introduction" placeholder="搜索条件"/>
 
         </el-form-item>
         <el-form-item>
@@ -31,49 +33,57 @@
       </el-form>
     </div>
     <div class="gva-table-box">
-        <div class="gva-btn-list">
-            <el-button type="primary" icon="plus" @click="openDialog">新增</el-button>
-            <el-popover v-model:visible="deleteVisible" placement="top" width="160">
-            <p>确定要删除吗？</p>
-            <div style="text-align: right; margin-top: 8px;">
-                <el-button type="primary" link @click="deleteVisible = false">取消</el-button>
-                <el-button type="primary" @click="onDelete">确定</el-button>
-            </div>
-            <template #reference>
-                <el-button icon="delete" style="margin-left: 10px;" :disabled="!multipleSelection.length" @click="deleteVisible = true">删除</el-button>
-            </template>
-            </el-popover>
-        </div>
-        <el-table
-        ref="multipleTable"
-        style="width: 100%"
-        tooltip-effect="dark"
-        :data="tableData"
-        row-key="ID"
-        @selection-change="handleSelectionChange"
-        >
-        <el-table-column type="selection" width="55" />
-        <el-table-column align="left" label="日期" width="180">
-            <template #default="scope">{{ formatDate(scope.row.CreatedAt) }}</template>
-        </el-table-column>
-        <el-table-column align="left" label="数据源名称" prop="name" width="120" />
-        <el-table-column align="left" label="数据源别名" prop="alias" width="120" />
+      <div class="gva-btn-list">
+        <el-button type="primary" icon="plus" @click="openDialog">新增</el-button>
+        <el-popover v-model:visible="deleteVisible" placement="top" width="160">
+          <p>确定要删除吗？</p>
+          <div style="text-align: right; margin-top: 8px;">
+            <el-button type="primary" link @click="deleteVisible = false">取消</el-button>
+            <el-button type="primary" @click="onDelete">确定</el-button>
+          </div>
+          <template #reference>
+            <el-button icon="delete" style="margin-left: 10px;" :disabled="!multipleSelection.length"
+                       @click="deleteVisible = true"
+            >删除
+            </el-button>
+          </template>
+        </el-popover>
+      </div>
+      <el-table
+          ref="multipleTable"
+          style="width: 100%"
+          tooltip-effect="dark"
+          :data="tableData"
+          row-key="ID"
+          @selection-change="handleSelectionChange"
+      >
+        <el-table-column type="selection" width="55"/>
+        <el-table-column align="left" label="数据源名称" prop="name" width="120"/>
+        <el-table-column align="left" label="数据源别名" prop="alias" width="120"/>
         <el-table-column align="left" label="分类" prop="cate" width="120">
-            <template #default="scope">
-            {{ filterDict(scope.row.cate,sql_datasource_cateOptions) }}
-            </template>
+          <template #default="scope">
+            {{ filterDict(scope.row.cate, sql_datasource_cateOptions) }}
+          </template>
         </el-table-column>
-        <el-table-column align="left" label="简介" prop="introduction" width="120" />
-        <el-table-column align="left" label="sql" prop="sql" width="120" />
+        <el-table-column align="left" label="简介" prop="introduction" width="120"/>
+        <!--        <el-table-column align="left" label="sql" prop="sql" width="120" />-->
+        <el-table-column align="left" label="创建时间" width="180">
+          <template #default="scope">{{ formatDate(scope.row.CreatedAt) }}</template>
+        </el-table-column>
+        <el-table-column align="left" label="修改时间" width="180">
+          <template #default="scope">{{ formatDate(scope.row.UpdatedAt) }}</template>
+        </el-table-column>
         <el-table-column align="left" label="按钮组">
-            <template #default="scope">
-            <el-button type="primary" link icon="edit" class="table-button" @click="updateDatasourceFunc(scope.row)">变更</el-button>
+          <template #default="scope">
+            <el-button type="primary" link icon="edit" class="table-button" @click="updateDatasourceFunc(scope.row)">
+              变更
+            </el-button>
             <el-button type="primary" link icon="delete" @click="deleteRow(scope.row)">删除</el-button>
-            </template>
+          </template>
         </el-table-column>
-        </el-table>
-        <div class="gva-pagination">
-            <el-pagination
+      </el-table>
+      <div class="gva-pagination">
+        <el-pagination
             layout="total, sizes, prev, pager, next, jumper"
             :current-page="page"
             :page-size="pageSize"
@@ -81,27 +91,34 @@
             :total="total"
             @current-change="handleCurrentChange"
             @size-change="handleSizeChange"
-            />
-        </div>
+        />
+      </div>
     </div>
     <el-dialog v-model="dialogFormVisible" :before-close="closeDialog" title="弹窗操作">
       <el-form :model="formData" label-position="right" ref="elFormRef" :rules="rule" label-width="80px">
-        <el-form-item label="数据源名称:"  prop="name" >
-          <el-input v-model="formData.name" :clearable="true"  placeholder="请输入" />
+        <el-form-item label="数据源名称:" prop="name">
+          <el-input v-model="formData.name" :clearable="true" placeholder="请输入"/>
         </el-form-item>
-        <el-form-item label="数据源别名:"  prop="alias" >
-          <el-input v-model="formData.alias" :clearable="true"  placeholder="请输入" />
+        <el-form-item label="数据源别名:" prop="alias">
+          <el-input v-model="formData.alias" :clearable="true" placeholder="请输入"/>
         </el-form-item>
-        <el-form-item label="分类:"  prop="cate" >
-          <el-select v-model="formData.cate" placeholder="请选择" style="width:100%" :clearable="true" >
-            <el-option v-for="(item,key) in sql_datasource_cateOptions" :key="key" :label="item.label" :value="item.value" />
+        <el-form-item label="分类:" prop="cate">
+          <el-select v-model="formData.cate" placeholder="请选择" style="width:100%" :clearable="true">
+            <el-option v-for="(item,key) in sql_datasource_cateOptions" :key="key" :label="item.label"
+                       :value="item.value"
+            />
           </el-select>
         </el-form-item>
-        <el-form-item label="简介:"  prop="introduction" >
-          <el-input v-model="formData.introduction" :clearable="true"  placeholder="请输入" />
+        <el-form-item label="简介:" prop="introduction">
+          <el-input v-model="formData.introduction" :clearable="true" placeholder="请输入"/>
         </el-form-item>
-        <el-form-item label="sql:"  prop="sql" >
-          <el-input v-model="formData.sql" :clearable="true"  placeholder="请输入" />
+        <el-form-item label="sql:" prop="sql">
+          <!--         <el-input v-model="formData.sql" :clearable="true"  placeholder="请输入" />-->
+          <codemirror :style="{ minHeight: '600px', minWidth: '700px' }" :extensions="extensions"
+                      tabSize="4"
+                      v-model="formData.sql"
+          >
+          </codemirror>
         </el-form-item>
       </el-form>
       <template #footer>
@@ -116,7 +133,7 @@
 
 <script>
 export default {
-  name: 'Datasource'
+  name: 'Datasource',
 }
 </script>
 
@@ -127,40 +144,45 @@ import {
   deleteDatasourceByIds,
   updateDatasource,
   findDatasource,
-  getDatasourceList
+  getDatasourceList,
 } from '@/api/sql_datasource'
 
 // 全量引入格式化工具 请按需保留
+import { Codemirror } from 'vue-codemirror'
+import { sql } from '@codemirror/lang-sql'
+import { oneDark } from '@codemirror/theme-one-dark'
+
 import { getDictFunc, formatDate, formatBoolean, filterDict } from '@/utils/format'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { ref, reactive } from 'vue'
 
+const extensions = [sql(), oneDark]
+
 // 自动化生成的字典（可能为空）以及字段
 const sql_datasource_cateOptions = ref([])
 const formData = ref({
-        name: '',
-        alias: '',
-        cate: undefined,
-        introduction: '',
-        sql: '',
-        })
+  name: '',
+  alias: '',
+  cate: undefined,
+  introduction: '',
+  sql: '',
+})
 
 // 验证规则
 const rule = reactive({
-               name : [{
-                   required: true,
-                   message: '',
-                   trigger: ['input','blur'],
-               }],
-               cate : [{
-                   required: true,
-                   message: '',
-                   trigger: ['input','blur'],
-               }],
+  name: [{
+    required: true,
+    message: '',
+    trigger: ['input', 'blur'],
+  }],
+  cate: [{
+    required: true,
+    message: '',
+    trigger: ['input', 'blur'],
+  }],
 })
 
 const elFormRef = ref()
-
 
 // =========== 表格控制部分 ===========
 const page = ref(1)
@@ -210,91 +232,88 @@ getTableData()
 // ============== 表格控制部分结束 ===============
 
 // 获取需要的字典 可能为空 按需保留
-const setOptions = async () =>{
-    sql_datasource_cateOptions.value = await getDictFunc('sql_datasource_cate')
+const setOptions = async() => {
+  sql_datasource_cateOptions.value = await getDictFunc('sql_datasource_cate')
 }
 
 // 获取需要的字典 可能为空 按需保留
 setOptions()
 
-
 // 多选数据
 const multipleSelection = ref([])
 // 多选
 const handleSelectionChange = (val) => {
-    multipleSelection.value = val
+  multipleSelection.value = val
 }
 
 // 删除行
 const deleteRow = (row) => {
-    ElMessageBox.confirm('确定要删除吗?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-    }).then(() => {
-            deleteDatasourceFunc(row)
-        })
-    }
-
+  ElMessageBox.confirm('确定要删除吗?', '提示', {
+    confirmButtonText: '确定',
+    cancelButtonText: '取消',
+    type: 'warning',
+  }).then(() => {
+    deleteDatasourceFunc(row)
+  })
+}
 
 // 批量删除控制标记
 const deleteVisible = ref(false)
 
 // 多选删除
 const onDelete = async() => {
-      const ids = []
-      if (multipleSelection.value.length === 0) {
-        ElMessage({
-          type: 'warning',
-          message: '请选择要删除的数据'
-        })
-        return
-      }
-      multipleSelection.value &&
-        multipleSelection.value.map(item => {
-          ids.push(item.ID)
-        })
-      const res = await deleteDatasourceByIds({ ids })
-      if (res.code === 0) {
-        ElMessage({
-          type: 'success',
-          message: '删除成功'
-        })
-        if (tableData.value.length === ids.length && page.value > 1) {
-          page.value--
-        }
-        deleteVisible.value = false
-        getTableData()
-      }
+  const ids = []
+  if (multipleSelection.value.length === 0) {
+    ElMessage({
+      type: 'warning',
+      message: '请选择要删除的数据',
+    })
+    return
+  }
+  multipleSelection.value &&
+  multipleSelection.value.map(item => {
+    ids.push(item.ID)
+  })
+  const res = await deleteDatasourceByIds({ ids })
+  if (res.code === 0) {
+    ElMessage({
+      type: 'success',
+      message: '删除成功',
+    })
+    if (tableData.value.length === ids.length && page.value > 1) {
+      page.value--
     }
+    deleteVisible.value = false
+    getTableData()
+  }
+}
 
 // 行为控制标记（弹窗内部需要增还是改）
 const type = ref('')
 
 // 更新行
 const updateDatasourceFunc = async(row) => {
-    const res = await findDatasource({ ID: row.ID })
-    type.value = 'update'
-    if (res.code === 0) {
-        formData.value = res.data.redatasource
-        dialogFormVisible.value = true
-    }
+  const res = await findDatasource({ ID: row.ID })
+  type.value = 'update'
+  if (res.code === 0) {
+    formData.value = res.data.redatasource
+    dialogFormVisible.value = true
+  }
 }
 
-
 // 删除行
-const deleteDatasourceFunc = async (row) => {
-    const res = await deleteDatasource({ ID: row.ID })
-    if (res.code === 0) {
-        ElMessage({
-                type: 'success',
-                message: '删除成功'
-            })
-            if (tableData.value.length === 1 && page.value > 1) {
-            page.value--
-        }
-        getTableData()
+const deleteDatasourceFunc = async(row) => {
+  const res = await deleteDatasource({ ID: row.ID })
+  if (res.code === 0) {
+    ElMessage({
+      type: 'success',
+      message: '删除成功',
+    })
+    if (tableData.value.length === 1 && page.value > 1) {
+      page.value--
     }
+    getTableData()
+  }
 }
 
 // 弹窗控制标记
@@ -302,46 +321,46 @@ const dialogFormVisible = ref(false)
 
 // 打开弹窗
 const openDialog = () => {
-    type.value = 'create'
-    dialogFormVisible.value = true
+  type.value = 'create'
+  dialogFormVisible.value = true
 }
 
 // 关闭弹窗
 const closeDialog = () => {
-    dialogFormVisible.value = false
-    formData.value = {
-        name: '',
-        alias: '',
-        cate: undefined,
-        introduction: '',
-        sql: '',
-        }
+  dialogFormVisible.value = false
+  formData.value = {
+    name: '',
+    alias: '',
+    cate: undefined,
+    introduction: '',
+    sql: '',
+  }
 }
 // 弹窗确定
-const enterDialog = async () => {
-     elFormRef.value?.validate( async (valid) => {
-             if (!valid) return
-              let res
-              switch (type.value) {
-                case 'create':
-                  res = await createDatasource(formData.value)
-                  break
-                case 'update':
-                  res = await updateDatasource(formData.value)
-                  break
-                default:
-                  res = await createDatasource(formData.value)
-                  break
-              }
-              if (res.code === 0) {
-                ElMessage({
-                  type: 'success',
-                  message: '创建/更改成功'
-                })
-                closeDialog()
-                getTableData()
-              }
+const enterDialog = async() => {
+  elFormRef.value?.validate(async(valid) => {
+    if (!valid) return
+    let res
+    switch (type.value) {
+      case 'create':
+        res = await createDatasource(formData.value)
+        break
+      case 'update':
+        res = await updateDatasource(formData.value)
+        break
+      default:
+        res = await createDatasource(formData.value)
+        break
+    }
+    if (res.code === 0) {
+      ElMessage({
+        type: 'success',
+        message: '创建/更改成功',
       })
+      closeDialog()
+      getTableData()
+    }
+  })
 }
 </script>
 

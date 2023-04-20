@@ -5,7 +5,7 @@
                           否则将依法维权
 */
 
-var child_process = require('child_process')
+/* var child_process = require('child_process')
 
 var url = 'https://www.gin-vue-admin.com'
 var cmd = ''
@@ -20,4 +20,4 @@ switch (process.platform) {
     cmd = 'open'
     child_process.exec(cmd + ' ' + url)
     break
-}
+} */

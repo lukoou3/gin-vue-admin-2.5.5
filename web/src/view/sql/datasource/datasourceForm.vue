@@ -16,8 +16,9 @@
         <el-form-item label="简介:" prop="introduction">
           <el-input v-model="formData.introduction" :clearable="true" placeholder="请输入" />
         </el-form-item>
-        <el-form-item label="sql:" prop="sql">
-          <el-input v-model="formData.sql" :clearable="true" placeholder="请输入" />
+        <el-form-item label="sql2:" prop="sql">
+          <!--<el-input v-model="formData.sql" :clearable="true" placeholder="请输入" />-->
+          <textarea ref="codeMirror" v-model="formData.sql"></textarea>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="save">保存</el-button>
@@ -32,9 +33,12 @@
 export default {
   name: 'Datasource'
 }
+
 </script>
 
 <script setup>
+// import CodeMirror from 'codemirror'
+
 import {
   createDatasource,
   updateDatasource,
