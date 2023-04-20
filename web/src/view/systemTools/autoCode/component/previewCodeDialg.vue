@@ -1,4 +1,5 @@
 <template>
+<!-- 代码生成的部分 -->
   <div class="previewCode">
     <el-tabs v-model="activeName">
       <el-tab-pane v-for="(item, key) in previewCode" :key="key" :label="key" :name="key">
