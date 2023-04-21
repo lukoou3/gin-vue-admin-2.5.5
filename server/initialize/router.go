@@ -63,6 +63,7 @@ func Routers() *gin.Engine {
 	{
 		sqlRouter := router.RouterGroupApp.Sql
 		sqlRouter.InitDatasourceRouter(PrivateGroup)
+		sqlRouter.InitQuerySqlRouter(PrivateGroup)
 	}
 	{
 		codeRouter := router.RouterGroupApp.Code
