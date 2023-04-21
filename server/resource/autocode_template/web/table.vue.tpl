@@ -91,9 +91,6 @@
         {{- end}}
         >
         <el-table-column type="selection" width="55" />
-        <el-table-column align="left" label="日期" width="180">
-            <template #default="scope">{{ "{{ formatDate(scope.row.CreatedAt) }}" }}</template>
-        </el-table-column>
         {{- range .Fields}}
         {{- if .DictType}}
         <el-table-column {{- if .Sort}} sortable{{- end}} align="left" label="{{.FieldDesc}}" prop="{{.FieldJson}}" width="120">
@@ -113,8 +110,15 @@
         <el-table-column {{- if .Sort}} sortable{{- end}} align="left" label="{{.FieldDesc}}" prop="{{.FieldJson}}" width="120" />
         {{- end }}
         {{- end }}
-        <el-table-column align="left" label="按钮组">
+        <el-table-column align="left" label="创建时间" width="180">
+            <template #default="scope">{{ "{{ formatDate(scope.row.CreatedAt) }}" }}</template>
+        </el-table-column>
+        <el-table-column align="left" label="修改时间" width="180">
+            <template #default="scope">{{ "{{ formatDate(scope.row.UpdatedAt) }}" }}</template>
+        </el-table-column>
+        <el-table-column align="left" label="操作">
             <template #default="scope">
+            <el-button type="primary" link icon="view" class="table-button" @click="cat{{.StructName}}Func(scope.row)">查看</el-button>
             <el-button type="primary" link icon="edit" class="table-button" @click="update{{.StructName}}Func(scope.row)">变更</el-button>
             <el-button type="primary" link icon="delete" @click="deleteRow(scope.row)">删除</el-button>
             </template>
@@ -132,7 +136,7 @@
             />
         </div>
     </div>
-    <el-dialog v-model="dialogFormVisible" :before-close="closeDialog" title="弹窗操作">
+    <el-dialog v-model="dialogFormVisible" :before-close="closeDialog" :title="dialogFormTitle">
       <el-form :model="formData" label-position="right" ref="elFormRef" :rules="rule" label-width="80px">
     {{- range .Fields}}
         <el-form-item label="{{.FieldDesc}}:"  prop="{{.FieldJson}}" >
@@ -140,7 +144,7 @@
           <el-switch v-model="formData.{{.FieldJson}}" active-color="#13ce66" inactive-color="#ff4949" active-text="是" inactive-text="否" clearable ></el-switch>
       {{- end }}
       {{- if eq .FieldType "string" }}
-          <el-input v-model="formData.{{.FieldJson}}" :clearable="{{.Clearable}}"  placeholder="请输入" />
+          <el-input v-model="formData.{{.FieldJson}}" :clearable="{{.Clearable}}"  placeholder="请输入" :readonly="dialogFormReadonly"/>
       {{- end }}
       {{- if eq .FieldType "int" }}
       {{- if .DictType}}
@@ -148,7 +152,7 @@
             <el-option v-for="(item,key) in {{ .DictType }}Options" :key="key" :label="item.label" :value="item.value" />
           </el-select>
       {{- else }}
-          <el-input v-model.number="formData.{{ .FieldJson }}" :clearable="{{.Clearable}}" placeholder="请输入" />
+          <el-input v-model.number="formData.{{ .FieldJson }}" :clearable="{{.Clearable}}" placeholder="请输入" :readonly="dialogFormReadonly"/>
       {{- end }}
       {{- end }}
       {{- if eq .FieldType "time.Time" }}
@@ -167,8 +171,8 @@
       </el-form>
       <template #footer>
         <div class="dialog-footer">
-          <el-button @click="closeDialog">取 消</el-button>
-          <el-button type="primary" @click="enterDialog">确 定</el-button>
+          <el-button @click="closeDialog">返 回</el-button>
+          <el-button v-if="!dialogFormReadonly" type="primary" @click="enterDialog">确 定</el-button>
         </div>
       </template>
     </el-dialog>
@@ -366,8 +370,24 @@ const update{{.StructName}}Func = async(row) => {
     type.value = 'update'
     if (res.code === 0) {
         formData.value = res.data.re{{.Abbreviation}}
+        dialogFormTitle.value = '修改'
+        dialogFormReadonly.value = false
+        dialogFormFieldReadonly.value = true
         dialogFormVisible.value = true
     }
+}
+
+// 查看行
+const cat{{.StructName}}Func = async(row) => {
+  const res = await find{{.StructName}}({ ID: row.ID })
+  type.value = 'cat'
+  if (res.code === 0) {
+    formData.value = res.data.re{{.Abbreviation}}
+    dialogFormTitle.value = '查看'
+    dialogFormReadonly.value = true
+    dialogFormFieldReadonly.value = true
+    dialogFormVisible.value = true
+  }
 }
 
 
@@ -388,10 +408,16 @@ const delete{{.StructName}}Func = async (row) => {
 
 // 弹窗控制标记
 const dialogFormVisible = ref(false)
+const dialogFormTitle = ref('')
+const dialogFormReadonly = ref(false)
+const dialogFormFieldReadonly = ref(false)
 
 // 打开弹窗
 const openDialog = () => {
     type.value = 'create'
+    dialogFormTitle.value = '新增'
+    dialogFormReadonly.value = false
+    dialogFormFieldReadonly.value = false
     dialogFormVisible.value = true
 }
 
