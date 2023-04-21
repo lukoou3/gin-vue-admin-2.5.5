@@ -11,7 +11,10 @@ module.exports = {
     node: true,
     es6: true
   },
-  extends: ['plugin:vue/recommended', 'eslint:recommended'],
+  extends: [
+    //关闭vue语法校验
+    //'plugin:vue/recommended', 'eslint:recommended'
+  ],
   globals: {
     defineProps: "readonly",
     defineEmits: "readonly",

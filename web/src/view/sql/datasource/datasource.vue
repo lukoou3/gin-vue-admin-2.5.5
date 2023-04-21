@@ -73,8 +73,11 @@
         <el-table-column align="left" label="修改时间" width="180">
           <template #default="scope">{{ formatDate(scope.row.UpdatedAt) }}</template>
         </el-table-column>
-        <el-table-column align="left" label="按钮组">
+        <el-table-column align="left" label="操作">
           <template #default="scope">
+            <el-button type="primary" link icon="view" class="table-button" @click="catDatasourceFunc(scope.row)">
+              查看
+            </el-button>
             <el-button type="primary" link icon="edit" class="table-button" @click="updateDatasourceFunc(scope.row)">
               变更
             </el-button>
@@ -94,37 +97,42 @@
         />
       </div>
     </div>
-    <el-dialog v-model="dialogFormVisible" :before-close="closeDialog" title="弹窗操作">
-      <el-form :model="formData" label-position="right" ref="elFormRef" :rules="rule" label-width="80px">
+    <el-dialog v-model="dialogFormVisible" :before-close="closeDialog" :title="dialogFormTitle">
+      <el-form :model="formData" label-position="right" ref="elFormRef" :rules="rule" label-width="100px">
         <el-form-item label="数据源名称:" prop="name">
-          <el-input v-model="formData.name" :clearable="true" placeholder="请输入"/>
+          <el-input v-model="formData.name" :clearable="true" placeholder="请输入" :readonly="dialogFormFieldReadonly"/>
         </el-form-item>
         <el-form-item label="数据源别名:" prop="alias">
-          <el-input v-model="formData.alias" :clearable="true" placeholder="请输入"/>
+          <el-input v-model="formData.alias" :clearable="true" placeholder="请输入" :readonly="dialogFormReadonly"/>
         </el-form-item>
         <el-form-item label="分类:" prop="cate">
-          <el-select v-model="formData.cate" placeholder="请选择" style="width:100%" :clearable="true">
+          <el-select v-model="formData.cate" placeholder="请选择" style="width:100%" :clearable="true" :readonly="dialogFormReadonly">
             <el-option v-for="(item,key) in sql_datasource_cateOptions" :key="key" :label="item.label"
                        :value="item.value"
             />
           </el-select>
         </el-form-item>
         <el-form-item label="简介:" prop="introduction">
-          <el-input v-model="formData.introduction" :clearable="true" placeholder="请输入"/>
+          <el-input v-model="formData.introduction" :clearable="true" placeholder="请输入"
+                    :readonly="dialogFormReadonly"
+          />
         </el-form-item>
         <el-form-item label="sql:" prop="sql">
           <!--         <el-input v-model="formData.sql" :clearable="true"  placeholder="请输入" />-->
-          <codemirror :style="{ minHeight: '600px', minWidth: '700px' }" :extensions="extensions"
-                      tabSize="4"
-                      v-model="formData.sql"
+          <codemirror
+              :style="{ minHeight:'400px',maxHeight:'600px',minWidth:'100%'}"
+              :extensions="extensions"
+              tabSize="4"
+              v-model="formData.sql"
+              :readonly="dialogFormReadonly"
           >
           </codemirror>
         </el-form-item>
       </el-form>
       <template #footer>
         <div class="dialog-footer">
-          <el-button @click="closeDialog">取 消</el-button>
-          <el-button type="primary" @click="enterDialog">确 定</el-button>
+          <el-button @click="closeDialog">返回</el-button>
+          <el-button v-if="!dialogFormReadonly" type="primary" @click="enterDialog">确 定</el-button>
         </div>
       </template>
     </el-dialog>
@@ -297,6 +305,22 @@ const updateDatasourceFunc = async(row) => {
   type.value = 'update'
   if (res.code === 0) {
     formData.value = res.data.redatasource
+    dialogFormTitle.value = '修改'
+    dialogFormReadonly.value = false
+    dialogFormFieldReadonly.value = true
+    dialogFormVisible.value = true
+  }
+}
+
+// 查看行
+const catDatasourceFunc = async(row) => {
+  const res = await findDatasource({ ID: row.ID })
+  type.value = 'cat'
+  if (res.code === 0) {
+    formData.value = res.data.redatasource
+    dialogFormTitle.value = '查看'
+    dialogFormReadonly.value = true
+    dialogFormFieldReadonly.value = true
     dialogFormVisible.value = true
   }
 }
@@ -318,10 +342,16 @@ const deleteDatasourceFunc = async(row) => {
 
 // 弹窗控制标记
 const dialogFormVisible = ref(false)
+const dialogFormTitle = ref('')
+const dialogFormReadonly = ref(false)
+const dialogFormFieldReadonly = ref(false)
 
 // 打开弹窗
 const openDialog = () => {
   type.value = 'create'
+  dialogFormTitle.value = '新增'
+  dialogFormReadonly.value = false
+  dialogFormFieldReadonly.value = false
   dialogFormVisible.value = true
 }
 
@@ -338,6 +368,9 @@ const closeDialog = () => {
 }
 // 弹窗确定
 const enterDialog = async() => {
+  if (type.value === 'cat') {
+    return
+  }
   elFormRef.value?.validate(async(valid) => {
     if (!valid) return
     let res
