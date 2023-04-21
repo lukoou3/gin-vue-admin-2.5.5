@@ -64,6 +64,10 @@ func Routers() *gin.Engine {
 		sqlRouter := router.RouterGroupApp.Sql
 		sqlRouter.InitDatasourceRouter(PrivateGroup)
 	}
+	{
+		codeRouter := router.RouterGroupApp.Code
+		codeRouter.InitShellcodeRouter(PrivateGroup)
+	}
 
 	global.GVA_LOG.Info("router register success")
 	return Router
