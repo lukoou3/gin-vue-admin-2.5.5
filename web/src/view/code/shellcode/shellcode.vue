@@ -40,14 +40,18 @@
         @selection-change="handleSelectionChange"
         >
         <el-table-column type="selection" width="55" />
-        <el-table-column align="left" label="日期" width="180">
-            <template #default="scope">{{ formatDate(scope.row.CreatedAt) }}</template>
-        </el-table-column>
         <el-table-column align="left" label="名称" prop="name" width="120" />
-        <el-table-column align="left" label="code" prop="code" width="120" />
+<!--        <el-table-column align="left" label="code" prop="code" width="120" />-->
         <el-table-column align="left" label="描述" prop="desc" width="120" />
-        <el-table-column align="left" label="按钮组">
+          <el-table-column align="left" label="创建时间" width="180">
+            <template #default="scope">{{ formatDate(scope.row.CreatedAt) }}</template>
+          </el-table-column>
+          <el-table-column align="left" label="修改时间" width="180">
+            <template #default="scope">{{ formatDate(scope.row.UpdatedAt) }}</template>
+          </el-table-column>
+        <el-table-column align="left" label="操作">
             <template #default="scope">
+            <el-button type="primary" link icon="view" class="table-button" @click="catShellcodeFunc(scope.row)">查看</el-button>
             <el-button type="primary" link icon="edit" class="table-button" @click="updateShellcodeFunc(scope.row)">变更</el-button>
             <el-button type="primary" link icon="delete" @click="deleteRow(scope.row)">删除</el-button>
             </template>
@@ -65,22 +69,30 @@
             />
         </div>
     </div>
-    <el-dialog v-model="dialogFormVisible" :before-close="closeDialog" title="弹窗操作">
-      <el-form :model="formData" label-position="right" ref="elFormRef" :rules="rule" label-width="80px">
+    <el-dialog v-model="dialogFormVisible" :before-close="closeDialog" :title="dialogFormTitle">
+      <el-form :model="formData" label-position="right" ref="elFormRef" :rules="rule" label-width="100px">
         <el-form-item label="名称:"  prop="name" >
-          <el-input v-model="formData.name" :clearable="true"  placeholder="请输入" />
+          <el-input v-model="formData.name" :clearable="true"  placeholder="请输入" :readonly="dialogFormFieldReadonly"/>
         </el-form-item>
         <el-form-item label="code:"  prop="code" >
-          <el-input v-model="formData.code" :clearable="true"  placeholder="请输入" />
+          <!--<el-input v-model="formData.code" :clearable="true"  placeholder="请输入" :readonly="dialogFormReadonly"/>-->
+          <codemirror
+              :style="{ minHeight:'400px',maxHeight:'600px',minWidth:'100%'}"
+              :extensions="extensions"
+              tabSize="4"
+              v-model="formData.code"
+              :readonly="dialogFormReadonly"
+          >
+          </codemirror>
         </el-form-item>
         <el-form-item label="描述:"  prop="desc" >
-          <el-input v-model="formData.desc" :clearable="true"  placeholder="请输入" />
+          <el-input v-model="formData.desc" :clearable="true"  placeholder="请输入" :readonly="dialogFormReadonly"/>
         </el-form-item>
       </el-form>
       <template #footer>
         <div class="dialog-footer">
-          <el-button @click="closeDialog">取 消</el-button>
-          <el-button type="primary" @click="enterDialog">确 定</el-button>
+          <el-button @click="closeDialog">返 回</el-button>
+          <el-button v-if="!dialogFormReadonly" type="primary" @click="enterDialog">确 定</el-button>
         </div>
       </template>
     </el-dialog>
@@ -104,9 +116,15 @@ import {
 } from '@/api/shellcode'
 
 // 全量引入格式化工具 请按需保留
+import { Codemirror } from 'vue-codemirror'
+import { StreamLanguage } from '@codemirror/language'
+import { shell } from '@codemirror/legacy-modes/mode/shell'
+import { oneDark } from '@codemirror/theme-one-dark'
 import { getDictFunc, formatDate, formatBoolean, filterDict } from '@/utils/format'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { ref, reactive } from 'vue'
+
+const extensions = [StreamLanguage.define(shell), oneDark]
 
 // 自动化生成的字典（可能为空）以及字段
 const formData = ref({
@@ -246,10 +264,25 @@ const updateShellcodeFunc = async(row) => {
     type.value = 'update'
     if (res.code === 0) {
         formData.value = res.data.reshellcode
+        dialogFormTitle.value = '修改'
+        dialogFormReadonly.value = false
+        dialogFormFieldReadonly.value = true
         dialogFormVisible.value = true
     }
 }
 
+// 查看行
+const catShellcodeFunc = async(row) => {
+  const res = await findShellcode({ ID: row.ID })
+  type.value = 'cat'
+  if (res.code === 0) {
+    formData.value = res.data.reshellcode
+    dialogFormTitle.value = '查看'
+    dialogFormReadonly.value = true
+    dialogFormFieldReadonly.value = true
+    dialogFormVisible.value = true
+  }
+}
 
 // 删除行
 const deleteShellcodeFunc = async (row) => {
@@ -268,11 +301,17 @@ const deleteShellcodeFunc = async (row) => {
 
 // 弹窗控制标记
 const dialogFormVisible = ref(false)
+const dialogFormTitle = ref('')
+const dialogFormReadonly = ref(false)
+const dialogFormFieldReadonly = ref(false)
 
 // 打开弹窗
 const openDialog = () => {
-    type.value = 'create'
-    dialogFormVisible.value = true
+  type.value = 'create'
+  dialogFormTitle.value = '新增'
+  dialogFormReadonly.value = false
+  dialogFormFieldReadonly.value = false
+  dialogFormVisible.value = true
 }
 
 // 关闭弹窗

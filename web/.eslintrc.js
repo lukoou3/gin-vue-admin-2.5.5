@@ -13,7 +13,8 @@ module.exports = {
   },
   extends: [
     //关闭vue语法校验
-    //'plugin:vue/recommended', 'eslint:recommended'
+    //'plugin:vue/recommended',
+    'eslint:recommended'
   ],
   globals: {
     defineProps: "readonly",
