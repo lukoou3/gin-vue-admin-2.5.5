@@ -51,7 +51,6 @@
             {{ filterDict(scope.row.cate,querysql_cateOptions) }}
             </template>
         </el-table-column>
-        <el-table-column align="left" label="sql" prop="sql" width="120" />
         <el-table-column align="left" label="描述" prop="desc" width="120" />
         <el-table-column align="left" label="创建时间" width="180">
             <template #default="scope">{{ formatDate(scope.row.CreatedAt) }}</template>
@@ -90,7 +89,14 @@
           </el-select>
         </el-form-item>
         <el-form-item label="sql:"  prop="sql" >
-          <el-input v-model="formData.sql" :clearable="true"  placeholder="请输入" :readonly="dialogFormReadonly"/>
+          <codemirror
+              :style="{ minHeight:'400px',maxHeight:'600px',minWidth:'100%'}"
+              :extensions="extensions"
+              tabSize="4"
+              v-model="formData.sql"
+              :readonly="dialogFormReadonly"
+          >
+          </codemirror>
         </el-form-item>
         <el-form-item label="描述:"  prop="desc" >
           <el-input v-model="formData.desc" :clearable="true"  placeholder="请输入" :readonly="dialogFormReadonly"/>
@@ -122,10 +128,16 @@ import {
   getQuerySqlList
 } from '@/api/querySql'
 
+import { Codemirror } from 'vue-codemirror'
+import { sql } from '@codemirror/lang-sql'
+import { oneDark } from '@codemirror/theme-one-dark'
+
 // 全量引入格式化工具 请按需保留
 import { getDictFunc, formatDate, formatBoolean, filterDict } from '@/utils/format'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { ref, reactive } from 'vue'
+
+const extensions = [sql(), oneDark]
 
 // 自动化生成的字典（可能为空）以及字段
 const querysql_cateOptions = ref([])
