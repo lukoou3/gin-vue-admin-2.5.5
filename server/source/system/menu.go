@@ -26,11 +26,24 @@ func (i *initMenu) MigrateTable(ctx context.Context) (context.Context, error) {
 	if !ok {
 		return ctx, system.ErrMissingDBContext
 	}
-	return ctx, db.AutoMigrate(
+
+	err := db.AutoMigrate(&SysBaseMenu{})
+	if err != nil {
+		return ctx, err
+	}
+
+	err = db.AutoMigrate(&SysBaseMenuParameter{})
+	if err != nil {
+		return ctx, err
+	}
+
+	return ctx, db.AutoMigrate(&SysBaseMenuBtn{})
+
+	/*return ctx, db.AutoMigrate(
 		&SysBaseMenu{},
 		&SysBaseMenuParameter{},
 		&SysBaseMenuBtn{},
-	)
+	)*/
 }
 
 func (i *initMenu) TableCreated(ctx context.Context) bool {

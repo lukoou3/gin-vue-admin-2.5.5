@@ -108,18 +108,23 @@ mssql:
   log-zap: false
 mysql:
   path: 127.0.0.1
-  port: "3306"
-  config: charset=utf8mb4&parseTime=True&loc=Local
-  db-name: gva
-  username: root
-  password: "123456"
-  prefix: ""
-  singular: false
-  engine: ""
-  max-idle-conns: 10
-  max-open-conns: 100
-  log-mode: error
-  log-zap: false
+#  port: "3306"
+#  config: charset=utf8mb4&parseTime=True&loc=Local
+#  db-name: gva
+#  username: root
+#  password: "123456"
+#  prefix: ""
+#  singular: false
+#  engine: ""
+#  max-idle-conns: 10
+#  max-open-conns: 100
+#  log-mode: error
+#  log-zap: false
+# sqlite connect configuration
+sqlite:
+  path:'sqlite.db'
+  config:'sslmode=disable TimeZone=Asia/Shanghai'
+  db-name:''
 oracle:
   path: ""
   port: ""
@@ -163,7 +168,7 @@ redis:
 system:
   env: public
   addr: 8888
-  db-type: mysql
+  db-type: ""
   oss-type: local
   use-multipoint: false
   use-redis: false

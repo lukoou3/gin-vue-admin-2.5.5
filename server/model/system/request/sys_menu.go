@@ -1,7 +1,6 @@
 package request
 
 import (
-	"github.com/flipped-aurora/gin-vue-admin/server/global"
 	"github.com/flipped-aurora/gin-vue-admin/server/model/system"
 )
 
@@ -13,7 +12,8 @@ type AddMenuAuthorityInfo struct {
 
 func DefaultMenu() []system.SysBaseMenu {
 	return []system.SysBaseMenu{{
-		GVA_MODEL: global.GVA_MODEL{ID: 1},
+		//GVA_MODEL: global.GVA_MODEL{ID: 1},
+		ID:        1,
 		ParentId:  "0",
 		Path:      "dashboard",
 		Name:      "dashboard",

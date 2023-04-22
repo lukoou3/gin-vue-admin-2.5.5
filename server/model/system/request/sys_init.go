@@ -13,6 +13,7 @@ type InitDB struct {
 	UserName string `json:"userName" binding:"required"` // 数据库用户名
 	Password string `json:"password"`                    // 数据库密码
 	DBName   string `json:"dbName" binding:"required"`   // 数据库名
+	Path     string `json:"path"`                        //sqlite数据库路径
 }
 
 // MysqlEmptyDsn msyql 空数据库 建库链接
@@ -72,5 +73,13 @@ func (i *InitDB) ToPgsqlConfig() config.Pgsql {
 			LogMode:      "error",
 			Config:       "sslmode=disable TimeZone=Asia/Shanghai",
 		},
+	}
+}
+
+func (i *InitDB) ToSqliteConfig() config.Sqlite {
+	return config.Sqlite{
+		Path:   i.Path,
+		Dbname: i.DBName,
+		Config: "",
 	}
 }
