@@ -7,7 +7,7 @@ aliyun-oss:
   base-path: yourBasePath
 autocode:
   transfer-restart: true
-  root: D:\GoProject\gin-vue-admin
+  root: D:\GoProject\gin-vue-admin-2.5.5
   server: /server
   server-api: /api/v1/%s
   server-plug: /plugin/%s
@@ -190,10 +190,10 @@ timer:
     interval: 168h
 zap:
   level: info
-  prefix: '[github.com/flipped-aurora/gin-vue-admin/server]'
+  prefix: '[server]'
   format: console
   director: log
-  encode-level: LowercaseColorLevelEncoder
+  encode-level: LowercaseLevelEncoder
   stacktrace-key: stacktrace
   max-age: 0
   show-line: true

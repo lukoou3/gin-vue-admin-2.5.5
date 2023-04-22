@@ -17,7 +17,9 @@ type fileRotatelogs struct{}
 // Author [SliverHorn](https://github.com/SliverHorn)
 func (r *fileRotatelogs) GetWriteSyncer(level string) (zapcore.WriteSyncer, error) {
 	fileWriter, err := rotatelogs.New(
-		path.Join(global.GVA_CONFIG.Zap.Director, "%Y-%m-%d", level+".log"),
+		//不用每天生成文件夹
+		//path.Join(global.GVA_CONFIG.Zap.Director, "%Y-%m-%d", level+".log"),
+		path.Join(global.GVA_CONFIG.Zap.Director, level+"-%Y-%m-%d.log"),
 		rotatelogs.WithClock(rotatelogs.Local),
 		rotatelogs.WithMaxAge(time.Duration(global.GVA_CONFIG.Zap.MaxAge)*24*time.Hour), // 日志留存时间
 		rotatelogs.WithRotationTime(time.Hour*24),
