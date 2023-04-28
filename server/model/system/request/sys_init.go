@@ -58,24 +58,6 @@ func (i *InitDB) ToMysqlConfig() config.Mysql {
 	}
 }
 
-// ToPgsqlConfig 转换 config.Pgsql
-// Author [SliverHorn](https://github.com/SliverHorn)
-func (i *InitDB) ToPgsqlConfig() config.Pgsql {
-	return config.Pgsql{
-		GeneralDB: config.GeneralDB{
-			Path:         i.Host,
-			Port:         i.Port,
-			Dbname:       i.DBName,
-			Username:     i.UserName,
-			Password:     i.Password,
-			MaxIdleConns: 10,
-			MaxOpenConns: 100,
-			LogMode:      "error",
-			Config:       "sslmode=disable TimeZone=Asia/Shanghai",
-		},
-	}
-}
-
 func (i *InitDB) ToSqliteConfig() config.Sqlite {
 	return config.Sqlite{
 		Path:   i.Path,

@@ -32,6 +32,7 @@
               <el-option key="pgsql" label="pgsql" value="pgsql" />
               <el-option key="oracle" label="oracle" value="oracle" />
               <el-option key="mssql" label="mssql" value="mssql" />
+              <el-option key="sqlite" label="sqlite" value="sqlite" />
             </el-select>
           </el-form-item>
           <el-form-item label="host">
@@ -48,6 +49,9 @@
           </el-form-item>
           <el-form-item label="dbName">
             <el-input v-model="form.dbName" placeholder="请输入数据库名称" />
+          </el-form-item>
+          <el-form-item label="dbName">
+            <el-input v-model="form.path" placeholder="请输入数据库路径" />
           </el-form-item>
           <el-form-item>
             <div style="text-align: right">
@@ -93,6 +97,7 @@ const form = reactive({
   userName: 'root',
   password: '',
   dbName: 'gva',
+  path: 'gva',
 })
 const changeDB = (val) => {
   switch (val) {
@@ -134,6 +139,17 @@ const changeDB = (val) => {
         userName: 'mssql',
         password: '',
         dbName: 'gva',
+      })
+      break
+    case 'sqlite':
+      Object.assign(form, {
+        dbType: 'sqlite',
+        host: '127.0.0.1',
+        port: '1433',
+        userName: 'mssql',
+        password: '',
+        dbName: 'gva',
+        path: 'sqlite.db',
       })
       break
     default:

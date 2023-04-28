@@ -24,8 +24,8 @@ func (w *writer) Printf(message string, data ...interface{}) {
 	switch global.GVA_CONFIG.System.DbType {
 	case "mysql":
 		logZap = global.GVA_CONFIG.Mysql.LogZap
-	case "pgsql":
-		logZap = global.GVA_CONFIG.Pgsql.LogZap
+	case "sqlite":
+		logZap = global.GVA_CONFIG.Sqlite.LogZap
 	}
 	if logZap {
 		global.GVA_LOG.Info(fmt.Sprintf(message+"\n", data...))

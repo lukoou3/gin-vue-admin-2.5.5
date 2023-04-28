@@ -1,28 +1,26 @@
 package initialize
 
 import (
+	"fmt"
 	"os"
 
 	"github.com/flipped-aurora/gin-vue-admin/server/global"
 	"github.com/flipped-aurora/gin-vue-admin/server/model/example"
 	"github.com/flipped-aurora/gin-vue-admin/server/model/system"
 
+	"github.com/flipped-aurora/gin-vue-admin/server/model/code"
+	"github.com/flipped-aurora/gin-vue-admin/server/model/sql"
 	"go.uber.org/zap"
 	"gorm.io/gorm"
-	"github.com/flipped-aurora/gin-vue-admin/server/model/sql"
-	"github.com/flipped-aurora/gin-vue-admin/server/model/code"
 )
 
 func Gorm() *gorm.DB {
+	fmt.Println(global.GVA_CONFIG.System.DbType)
 	switch global.GVA_CONFIG.System.DbType {
 	case "mysql":
 		return GormMysql()
-	case "pgsql":
-		return GormPgSql()
-	case "oracle":
-		return GormOracle()
-	case "mssql":
-		return GormMssql()
+	case "sqlite":
+		return GormSqlite()
 	default:
 		return GormMysql()
 	}

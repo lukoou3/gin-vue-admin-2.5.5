@@ -9,7 +9,7 @@ import (
 	"gorm.io/gorm"
 )
 
-const initOrderAuthority = initOrderCasbin + 1
+const initOrderAuthority = 1
 
 type initAuthority struct{}
 

@@ -3,9 +3,11 @@ package system
 import (
 	"context"
 	"errors"
+	"fmt"
 	"github.com/flipped-aurora/gin-vue-admin/server/config"
-	"github.com/glebarez/sqlite"
 	"github.com/gookit/color"
+	//"github.com/glebarez/sqlite"
+	"gorm.io/driver/sqlite"
 
 	"github.com/flipped-aurora/gin-vue-admin/server/utils"
 
@@ -23,6 +25,8 @@ func NewSqliteInitHandler() *SqliteInitHandler {
 
 // WriteConfig mysql回写配置
 func (h SqliteInitHandler) WriteConfig(ctx context.Context) error {
+	a := ctx.Value("config")
+	fmt.Println(a)
 	c, ok := ctx.Value("config").(config.Sqlite)
 	if !ok {
 		return errors.New("sqlite config invalid")

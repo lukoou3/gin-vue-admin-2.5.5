@@ -4,19 +4,17 @@ import (
 	"fmt"
 	"github.com/flipped-aurora/gin-vue-admin/server/config"
 	"github.com/flipped-aurora/gin-vue-admin/server/global"
-	"github.com/glebarez/sqlite"
+	//"github.com/glebarez/sqlite"
+	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 )
 
 func GormSqlite() *gorm.DB {
 	m := global.GVA_CONFIG.Sqlite
-	if m.Dbname == "" {
+	if m.Path == "" {
 		return nil
 	}
-	dbpath := m.Dbname
-	if len(m.Path) > 0 {
-		dbpath = fmt.Sprintf("%s/%s", m.Path, m.Dbname)
-	}
+	dbpath := m.Path
 
 	if db, err := gorm.Open(sqlite.Open(dbpath), &gorm.Config{}); err != nil {
 		return nil

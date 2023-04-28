@@ -92,20 +92,6 @@ jwt:
 local:
   path: uploads/file
   store-path: uploads/file
-mssql:
-  path: ""
-  port: ""
-  config: ""
-  db-name: ""
-  username: ""
-  password: ""
-  prefix: ""
-  singular: false
-  engine: ""
-  max-idle-conns: 10
-  max-open-conns: 100
-  log-mode: ""
-  log-zap: false
 mysql:
   path: 127.0.0.1
 #  port: "3306"
@@ -122,37 +108,9 @@ mysql:
 #  log-zap: false
 # sqlite connect configuration
 sqlite:
-  path:'sqlite.db'
-  config:'sslmode=disable TimeZone=Asia/Shanghai'
-  db-name:''
-oracle:
-  path: ""
-  port: ""
-  config: ""
-  db-name: ""
-  username: ""
-  password: ""
-  prefix: ""
-  singular: false
-  engine: ""
-  max-idle-conns: 10
-  max-open-conns: 100
-  log-mode: ""
-  log-zap: false
-pgsql:
-  path: ""
-  port: ""
-  config: ""
-  db-name: ""
-  username: ""
-  password: ""
-  prefix: ""
-  singular: false
-  engine: ""
-  max-idle-conns: 10
-  max-open-conns: 100
-  log-mode: ""
-  log-zap: false
+  path: "sqlite.db"
+  config: "sslmode=disable TimeZone=Asia/Shanghai"
+  db-name: "sqlite.db"
 qiniu:
   zone: ZoneHuaDong
   bucket: ""
@@ -168,7 +126,7 @@ redis:
 system:
   env: public
   addr: 8888
-  db-type: ""
+  db-type: sqlite
   oss-type: local
   use-multipoint: false
   use-redis: false

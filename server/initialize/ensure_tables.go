@@ -2,7 +2,7 @@ package initialize
 
 import (
 	"context"
-	adapter "github.com/casbin/gorm-adapter/v3"
+	//adapter "github.com/casbin/gorm-adapter/v3"
 	"github.com/flipped-aurora/gin-vue-admin/server/model/example"
 	sysModel "github.com/flipped-aurora/gin-vue-admin/server/model/system"
 	"github.com/flipped-aurora/gin-vue-admin/server/service/system"
@@ -49,7 +49,7 @@ func (e *ensureTables) MigrateTable(ctx context.Context) (context.Context, error
 		sysModel.SysAuthorityBtn{},
 		sysModel.SysAutoCode{},
 
-		adapter.CasbinRule{},
+		//adapter.CasbinRule{},
 
 		example.ExaFile{},
 		example.ExaCustomer{},
@@ -84,7 +84,7 @@ func (e *ensureTables) TableCreated(ctx context.Context) bool {
 		sysModel.SysAuthorityBtn{},
 		sysModel.SysAutoCode{},
 
-		adapter.CasbinRule{},
+		//adapter.CasbinRule{},
 
 		example.ExaFile{},
 		example.ExaCustomer{},

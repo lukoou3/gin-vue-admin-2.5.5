@@ -1,15 +1,15 @@
 package system
 
-import (
+/*import (
 	"context"
 
-	adapter "github.com/casbin/gorm-adapter/v3"
+	//adapter "github.com/casbin/gorm-adapter/v3"
 	"github.com/flipped-aurora/gin-vue-admin/server/service/system"
 	"github.com/pkg/errors"
 	"gorm.io/gorm"
 )
-
-const initOrderCasbin = initOrderApi + 1
+*/
+/*const initOrderCasbin = initOrderApi + 1
 
 type initCasbin struct{}
 
@@ -258,3 +258,4 @@ func (i *initCasbin) DataInserted(ctx context.Context) bool {
 	}
 	return true
 }
+*/

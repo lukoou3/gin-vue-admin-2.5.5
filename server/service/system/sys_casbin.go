@@ -3,12 +3,10 @@ package system
 import (
 	"errors"
 	"github.com/casbin/casbin/v2"
-	"github.com/casbin/casbin/v2/model"
-	gormadapter "github.com/casbin/gorm-adapter/v3"
-	"github.com/flipped-aurora/gin-vue-admin/server/global"
+	//gormadapter "github.com/casbin/gorm-adapter/v3"
+
 	"github.com/flipped-aurora/gin-vue-admin/server/model/system/request"
-	_ "github.com/go-sql-driver/mysql"
-	"go.uber.org/zap"
+
 	"strconv"
 	"sync"
 )
@@ -49,7 +47,8 @@ func (casbinService *CasbinService) UpdateCasbin(AuthorityID uint, casbinInfos [
 //@return: error
 
 func (casbinService *CasbinService) UpdateCasbinApi(oldPath string, newPath string, oldMethod string, newMethod string) error {
-	err := global.GVA_DB.Model(&gormadapter.CasbinRule{}).Where("v1 = ? AND v2 = ?", oldPath, oldMethod).Updates(map[string]interface{}{
+	return nil
+	/*err := global.GVA_DB.Model(&gormadapter.CasbinRule{}).Where("v1 = ? AND v2 = ?", oldPath, oldMethod).Updates(map[string]interface{}{
 		"v1": newPath,
 		"v2": newMethod,
 	}).Error
@@ -58,7 +57,7 @@ func (casbinService *CasbinService) UpdateCasbinApi(oldPath string, newPath stri
 	if err != nil {
 		return err
 	}
-	return err
+	return err*/
 }
 
 //@author: [piexlmax](https://github.com/piexlmax)
@@ -103,7 +102,8 @@ var (
 )
 
 func (casbinService *CasbinService) Casbin() *casbin.CachedEnforcer {
-	once.Do(func() {
+	return nil
+	/*once.Do(func() {
 		a, err := gormadapter.NewAdapterByDB(global.GVA_DB)
 		if err != nil {
 			zap.L().Error("适配数据库失败请检查casbin表是否为InnoDB引擎!", zap.Error(err))
@@ -112,16 +112,16 @@ func (casbinService *CasbinService) Casbin() *casbin.CachedEnforcer {
 		text := `
 		[request_definition]
 		r = sub, obj, act
-		
+
 		[policy_definition]
 		p = sub, obj, act
-		
+
 		[role_definition]
 		g = _, _
-		
+
 		[policy_effect]
 		e = some(where (p.eft == allow))
-		
+
 		[matchers]
 		m = r.sub == p.sub && keyMatch2(r.obj,p.obj) && r.act == p.act
 		`
@@ -134,5 +134,5 @@ func (casbinService *CasbinService) Casbin() *casbin.CachedEnforcer {
 		cachedEnforcer.SetExpireTime(60 * 60)
 		_ = cachedEnforcer.LoadPolicy()
 	})
-	return cachedEnforcer
+	return cachedEnforcer*/
 }
