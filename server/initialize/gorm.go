@@ -48,11 +48,19 @@ func RegisterTables() {
 		example.ExaFile{},
 		example.ExaCustomer{},
 		example.ExaFileChunk{},
-		example.ExaFileUploadAndDownload{}, sql.Datasource{}, code.Shellcode{}, sql.QuerySql{},
+		example.ExaFileUploadAndDownload{},
+		sql.Datasource{},
+		code.Shellcode{},
+		sql.QuerySql{},
 	)
 	if err != nil {
 		global.GVA_LOG.Error("register table failed", zap.Error(err))
 		os.Exit(0)
 	}
+
+	datasource := sql.Datasource{}
+	datasource.RegisterApis(db)
+
 	global.GVA_LOG.Info("register table success")
+
 }

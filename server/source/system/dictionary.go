@@ -8,7 +8,8 @@ import (
 	"gorm.io/gorm"
 )
 
-const initOrderDict = 1
+// const initOrderDict = initOrderCasbin + 1
+const initOrderDict = initOrderApi + 1
 
 type initDict struct{}
 

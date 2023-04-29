@@ -6,7 +6,7 @@ require (
 	github.com/alecthomas/template v0.0.0-20190718012654-fb15b899a751
 	github.com/aliyun/aliyun-oss-go-sdk v2.1.6+incompatible
 	github.com/aws/aws-sdk-go v1.42.27
-	github.com/casbin/casbin/v2 v2.51.0
+	github.com/casbin/casbin/v2 v2.55.1
 	github.com/flipped-aurora/ws v1.0.2
 	github.com/fsnotify/fsnotify v1.4.9
 	github.com/fvbock/endless v0.0.0-20170109170031-447134032cb6
@@ -27,18 +27,19 @@ require (
 	github.com/shirou/gopsutil/v3 v3.22.5
 	github.com/songzhibin97/gkit v1.2.7
 	github.com/spf13/viper v1.7.0
-	github.com/stretchr/testify v1.7.1
+	github.com/stretchr/testify v1.8.0
 	github.com/swaggo/gin-swagger v1.3.0
 	github.com/swaggo/swag v1.7.0
 	github.com/tencentyun/cos-go-sdk-v5 v0.7.19
 	github.com/unrolled/secure v1.0.7
 	go.uber.org/zap v1.16.0
-	golang.org/x/crypto v0.0.0-20220411220226-7b82a4e95df4
+	golang.org/x/crypto v0.0.0-20221005025214-4161e89ecf1b
 	golang.org/x/sync v0.0.0-20210220032951-036812b2e83c
 	golang.org/x/text v0.3.7
-	gorm.io/driver/mysql v1.3.3
+	gorm.io/driver/mysql v1.4.3
 	gorm.io/driver/sqlite v1.5.0
 	gorm.io/gorm v1.24.7-0.20230306060331-85eaf9eeda11
+	gorm.io/plugin/dbresolver v1.4.1
 	nhooyr.io/websocket v1.8.7
 )
 
@@ -77,7 +78,7 @@ require (
 	github.com/lufia/plan9stats v0.0.0-20211012122336-39d0f177ccd0 // indirect
 	github.com/magiconair/properties v1.8.1 // indirect
 	github.com/mailru/easyjson v0.7.7 // indirect
-	github.com/mattn/go-isatty v0.0.14 // indirect
+	github.com/mattn/go-isatty v0.0.17 // indirect
 	github.com/mattn/go-sqlite3 v1.14.15 // indirect
 	github.com/mitchellh/mapstructure v1.2.2 // indirect
 	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect
@@ -99,12 +100,12 @@ require (
 	go.uber.org/multierr v1.5.0 // indirect
 	golang.org/x/image v0.0.0-20210220032944-ac19c3e999fb // indirect
 	golang.org/x/lint v0.0.0-20210508222113-6edffad5e616 // indirect
-	golang.org/x/net v0.0.0-20211216030914-fe4d6282115f // indirect
-	golang.org/x/sys v0.0.0-20220412211240-33da011f77ad // indirect
+	golang.org/x/net v0.0.0-20220425223048-2871e0cb64e4 // indirect
+	golang.org/x/sys v0.4.0 // indirect
 	golang.org/x/time v0.0.0-20211116232009-f0f3c7e86c11 // indirect
 	golang.org/x/tools v0.1.5 // indirect
 	google.golang.org/protobuf v1.27.1 // indirect
 	gopkg.in/ini.v1 v1.55.0 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
-	gopkg.in/yaml.v3 v3.0.0 // indirect
+	gopkg.in/yaml.v3 v3.0.1 // indirect
 )

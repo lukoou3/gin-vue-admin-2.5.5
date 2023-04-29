@@ -442,6 +442,7 @@ func (autoCodeService *AutoCodeService) addAutoMoveFile(data *tplData) {
 // @return: err error
 
 func (autoCodeService *AutoCodeService) AutoCreateApi(a *system.AutoCodeStruct) (ids []uint, err error) {
+	// api权限是在这创建的，自己写的model要自己加
 	apiList := []system.SysApi{
 		{
 			Path:        "/" + a.Abbreviation + "/" + "create" + a.StructName,

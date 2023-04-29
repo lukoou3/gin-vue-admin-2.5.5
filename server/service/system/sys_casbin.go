@@ -3,7 +3,11 @@ package system
 import (
 	"errors"
 	"github.com/casbin/casbin/v2"
-	//gormadapter "github.com/casbin/gorm-adapter/v3"
+	"github.com/casbin/casbin/v2/model"
+	"github.com/flipped-aurora/gin-vue-admin/server/global"
+	"go.uber.org/zap"
+
+	gormadapter "github.com/flipped-aurora/gin-vue-admin/server/gorm-adapter"
 
 	"github.com/flipped-aurora/gin-vue-admin/server/model/system/request"
 
@@ -24,6 +28,7 @@ var CasbinServiceApp = new(CasbinService)
 func (casbinService *CasbinService) UpdateCasbin(AuthorityID uint, casbinInfos []request.CasbinInfo) error {
 	authorityId := strconv.Itoa(int(AuthorityID))
 	casbinService.ClearCasbin(0, authorityId)
+
 	rules := [][]string{}
 	for _, v := range casbinInfos {
 		rules = append(rules, []string{authorityId, v.Path, v.Method})
@@ -48,7 +53,7 @@ func (casbinService *CasbinService) UpdateCasbin(AuthorityID uint, casbinInfos [
 
 func (casbinService *CasbinService) UpdateCasbinApi(oldPath string, newPath string, oldMethod string, newMethod string) error {
 	return nil
-	/*err := global.GVA_DB.Model(&gormadapter.CasbinRule{}).Where("v1 = ? AND v2 = ?", oldPath, oldMethod).Updates(map[string]interface{}{
+	err := global.GVA_DB.Model(&gormadapter.CasbinRule{}).Where("v1 = ? AND v2 = ?", oldPath, oldMethod).Updates(map[string]interface{}{
 		"v1": newPath,
 		"v2": newMethod,
 	}).Error
@@ -57,7 +62,7 @@ func (casbinService *CasbinService) UpdateCasbinApi(oldPath string, newPath stri
 	if err != nil {
 		return err
 	}
-	return err*/
+	return err
 }
 
 //@author: [piexlmax](https://github.com/piexlmax)
@@ -88,6 +93,7 @@ func (casbinService *CasbinService) GetPolicyPathByAuthorityId(AuthorityID uint)
 func (casbinService *CasbinService) ClearCasbin(v int, p ...string) bool {
 	e := casbinService.Casbin()
 	success, _ := e.RemoveFilteredPolicy(v, p...)
+	//e.InvalidateCache() // 清除缓存
 	return success
 }
 
@@ -102,8 +108,7 @@ var (
 )
 
 func (casbinService *CasbinService) Casbin() *casbin.CachedEnforcer {
-	return nil
-	/*once.Do(func() {
+	once.Do(func() {
 		a, err := gormadapter.NewAdapterByDB(global.GVA_DB)
 		if err != nil {
 			zap.L().Error("适配数据库失败请检查casbin表是否为InnoDB引擎!", zap.Error(err))
@@ -134,5 +139,5 @@ func (casbinService *CasbinService) Casbin() *casbin.CachedEnforcer {
 		cachedEnforcer.SetExpireTime(60 * 60)
 		_ = cachedEnforcer.LoadPolicy()
 	})
-	return cachedEnforcer*/
+	return cachedEnforcer
 }
