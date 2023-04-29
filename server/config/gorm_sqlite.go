@@ -12,5 +12,5 @@ func (m *Sqlite) Dsn() string {
 }
 
 func (m *Sqlite) GetLogMode() string {
-	return "false"
+	return "true"
 }

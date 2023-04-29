@@ -12,6 +12,7 @@ type ApiGroup struct {
 	ExampleApiGroup example.ApiGroup
 	SqlApiGroup     sql.ApiGroup
 	CodeApiGroup    code.ApiGroup
+	CodeApiGroup    code.ApiGroup
 }
 
 var ApiGroupApp = new(ApiGroup)

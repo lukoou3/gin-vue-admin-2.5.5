@@ -12,6 +12,7 @@ type RouterGroup struct {
 	Example example.RouterGroup
 	Sql     sql.RouterGroup
 	Code    code.RouterGroup
+	Code    code.RouterGroup
 }
 
 var RouterGroupApp = new(RouterGroup)

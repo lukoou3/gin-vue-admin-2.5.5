@@ -68,6 +68,22 @@ db-list:
   max-open-conns: 100
   log-mode: ""
   log-zap: false
+- disable: false
+  type: "sqlite"
+  alias-name: "sqlite"
+  path: "D:\\pycharmWork\\django_notebook\\datas\\base_udf_data"
+  port: ""
+  config: ""
+  db-name: ""
+  username: ""
+  password: ""
+  prefix: ""
+  singular: false
+  engine: ""
+  max-idle-conns: 10
+  max-open-conns: 100
+  log-mode: ""
+  log-zap: false
 email:
   to: xxx@qq.com
   port: 465

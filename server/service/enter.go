@@ -12,6 +12,7 @@ type ServiceGroup struct {
 	ExampleServiceGroup example.ServiceGroup
 	SqlServiceGroup     sql.ServiceGroup
 	CodeServiceGroup    code.ServiceGroup
+	CodeServiceGroup    code.ServiceGroup
 }
 
 var ServiceGroupApp = new(ServiceGroup)

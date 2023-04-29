@@ -17,6 +17,8 @@ func DBList() {
 		switch info.Type {
 		case "mysql":
 			dbMap[info.AliasName] = GormMysqlByConfig(config.Mysql{GeneralDB: info.GeneralDB})
+		case "sqlite":
+			dbMap[info.AliasName] = GormSqliteByConfig(config.Sqlite{Path: info.Path, LogZap: info.LogZap})
 		default:
 			continue
 		}
